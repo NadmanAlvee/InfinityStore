@@ -98,27 +98,23 @@ export const orderItems = pgTable("order_items", {
 });
 
 // Relations
-// a user can have many orders over time.
-// User one-to-many Orders
-export const userRelations = relations(users, ({ many }) => ({
+// a user can have many orders over time. // User -> *Order
+export const usersRelations = relations(users, ({ many }) => ({
   orders: many(orders),
 }));
 
-// the same product can show up on many order lines
-// Product one-to-many orderItems
-export const productsRelations = relations(users, ({ many }) => ({
-  orders: many(orders),
+// the same product can show up on many order lines // Product -> *OrderItem
+export const productsRelations = relations(products, ({ many }) => ({
+  orderItems: many(orderItems),
 }));
 
 // each order belongs to exactly one user; each order can have many line items.
-// Product one-to-one user
-// Product one-to-many orderitems
 export const ordersRelations = relations(orders, ({ one, many }) => ({
   user: one(users, { fields: [orders.userId], references: [users.id] }),
   items: many(orderItems),
 }));
 
-// each line item is for exactly one order and one product
+// each order-item is for exactly one order and one product
 export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   order: one(orders, { fields: [orderItems.orderId], references: [orders.id] }),
   product: one(products, {
