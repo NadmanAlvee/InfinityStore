@@ -37,8 +37,6 @@ let cachedEnv: Env | null = null;
 export function loadEnv() {
   const parsed = envSchema.safeParse(process.env);
 
-  console.error(parsed.error?.flatten().fieldErrors);
-
   if (!parsed.success) {
     throw new Error("Invalid environment variables");
   }

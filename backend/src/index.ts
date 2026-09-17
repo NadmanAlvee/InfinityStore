@@ -1,7 +1,11 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import { clerkWebhookHandler } from "./webhooks/clerk";
+import { getEnv } from "./lib/env";
+
+const env = getEnv();
 
 const app = express();
 
@@ -19,6 +23,8 @@ app.use("/health", (_req, res) => {
   res.status(200).send("Ok");
 });
 
-app.listen(3001, () => {
-  console.log(`listening on port ${3001}`);
+app.listen(env.PORT, () => {
+  console.log(env);
+
+  console.log(`listening on port ${env.PORT}`);
 });
